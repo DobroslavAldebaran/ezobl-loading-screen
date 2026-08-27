@@ -3,16 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="https://dobroslavaldebaran.github.io/ezobl-loading-screen/">
     <title>Загрузка сервера...</title>
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #0a0a0a;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: #eee;
+        }
+
+        #slideshow {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            opacity: 0;
+            transform: scale(1.05);
+            transition: opacity 2s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+            animation: kenBurns 9s ease-in-out forwards;
+        }
+
+        @keyframes kenBurns {
+            0% {
+                transform: scale(1.05) translate(0, 0);
+            }
+            100% {
+                transform: scale(1.12) translate(-1.5%, -1%);
+            }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.85) 0%,
+                rgba(0, 0, 0, 0.35) 35%,
+                rgba(0, 0, 0, 0.1) 60%,
+                rgba(0, 0, 0, 0.3) 100%
+            );
+            pointer-events: none;
+        }
+
+        .ui {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 48px 64px 40px;
+            pointer-events: none;
+        }
+
+        #server-name {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+
+        .caption {
+            font-size: 28px;
+            font-weight: 400;
+            line-height: 1.45;
+            max-width: 900px;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 1s ease, transform 1s ease;
+            margin-bottom: 24px;
+        }
+
+        .caption.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .status {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .progress-bar {
+            width: 100%;
+            max-width: 500px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #8b1a1a, #c0392b);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+    </style>
 </head>
 <body>
     <div id="slideshow">
-        <div class="slide active" data-index="0" style="background-image: url('images/slide-00-capital.png')"></div>
-        <div class="slide" data-index="1" style="background-image: url('images/slide-01-quartmaster.png')"></div>
-        <div class="slide" data-index="2" style="background-image: url('images/slide-02-barracks.png')"></div>
-        <div class="slide" data-index="3" style="background-image: url('images/slide-03-sewer.png')"></div>
-        <div class="slide" data-index="4" style="background-image: url('images/slide-04-revive.png')"></div>
+        <img class="slide active" data-index="0" src="https://dobroslavaldebaran.github.io/ezobl-loading-screen/images/slide-00-capital.png" alt="">
+        <img class="slide" data-index="1" src="https://dobroslavaldebaran.github.io/ezobl-loading-screen/images/slide-01-quartmaster.png" alt="">
+        <img class="slide" data-index="2" src="https://dobroslavaldebaran.github.io/ezobl-loading-screen/images/slide-02-barracks.png" alt="">
+        <img class="slide" data-index="3" src="https://dobroslavaldebaran.github.io/ezobl-loading-screen/images/slide-03-sewer.png" alt="">
+        <img class="slide" data-index="4" src="https://dobroslavaldebaran.github.io/ezobl-loading-screen/images/slide-04-revive.png" alt="">
     </div>
 
     <div class="overlay"></div>
@@ -26,6 +169,6 @@
         </div>
     </div>
 
-    <script src="js/main.js"></script>
+    <script src="https://dobroslavaldebaran.github.io/ezobl-loading-screen/js/main.js"></script>
 </body>
 </html>
