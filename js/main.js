@@ -3,6 +3,10 @@
 
     var SLIDES = [
         {
+            image: "images/slide-00-capital.png",
+            caption: "Неизвестная столица неизвестной провинции, куда выжившие силы десятого экспедиционного полка пробиваются после катастрофы при высадке"
+        },
+        {
             image: "images/slide-01-quartmaster.png",
             caption: "Интендант 3 взвода ждёт ваших находок"
         },
@@ -16,19 +20,45 @@
         }
     ];
 
+    var INTRO_INDEX = 0;
     var SLIDE_DURATION = 9000;
     var CAPTION_DELAY = 800;
     var CAPTION_FADE_OUT = 500;
 
-    var currentIndex = 0;
+    var playlist = [];
+    var playlistIndex = 0;
+    var currentSlideIndex = INTRO_INDEX;
     var slideTimer = null;
     var captionTimer = null;
 
-    var slides = document.querySelectorAll(".slide");
+    var slideElements = document.querySelectorAll(".slide");
     var captionEl = document.getElementById("caption");
     var statusEl = document.getElementById("status");
     var progressEl = document.getElementById("progress");
     var serverNameEl = document.getElementById("server-name");
+
+    function shuffle(array) {
+        var result = array.slice();
+
+        for (var i = result.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = result[i];
+            result[i] = result[j];
+            result[j] = temp;
+        }
+
+        return result;
+    }
+
+    function buildPlaylist() {
+        var randomSlides = [];
+
+        for (var i = 1; i < SLIDES.length; i++) {
+            randomSlides.push(i);
+        }
+
+        return [INTRO_INDEX].concat(shuffle(randomSlides));
+    }
 
     function showCaption(text) {
         captionEl.classList.remove("visible");
@@ -44,25 +74,30 @@
         captionEl.classList.remove("visible");
     }
 
-    function goToSlide(index) {
-        var prev = slides[currentIndex];
-        var next = slides[index];
+    function goToSlide(slideIndex) {
+        var prev = slideElements[currentSlideIndex];
+        var next = slideElements[slideIndex];
 
         hideCaption();
-
         prev.classList.remove("active");
 
         next.classList.remove("active");
         void next.offsetWidth;
         next.classList.add("active");
 
-        currentIndex = index;
-        showCaption(SLIDES[index].caption);
+        currentSlideIndex = slideIndex;
+        showCaption(SLIDES[slideIndex].caption);
     }
 
     function nextSlide() {
-        var next = (currentIndex + 1) % SLIDES.length;
-        goToSlide(next);
+        playlistIndex++;
+
+        if (playlistIndex >= playlist.length) {
+            playlist = buildPlaylist();
+            playlistIndex = 0;
+        }
+
+        goToSlide(playlist[playlistIndex]);
         scheduleNext();
     }
 
@@ -75,7 +110,10 @@
     }
 
     function init() {
-        showCaption(SLIDES[0].caption);
+        playlist = buildPlaylist();
+        playlistIndex = 0;
+        currentSlideIndex = playlist[0];
+        goToSlide(playlist[0]);
         scheduleNext();
     }
 
